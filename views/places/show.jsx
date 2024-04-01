@@ -3,14 +3,30 @@ const Def = require('../default')
 
 function show(data) {
     let comments = (
-        <h3 className="active">
+        <h3 className="inactive">
             No comments yet
         </h3>
     )
+    let rating = (
+        <h3 className="inactive">
+            Not yet Rated
+        </h3>
+    )
+    if (data.place.comments.length) {
+        let sumRatings = data.place.comments.reduce((tot, c) => {
+            return tot + c.stars
+        }, 0)
+        let averageRating = sumRatings / data.place.comments.length
+        rating = (
+            <h3>
+                {Math.round(averageRating)} stars
+            </h3>
+        )
+        }
     if (data.place.comments.length) {
         comments = data.place.comments.map(c => {
             return (
-                <div className="border">
+                <div className="border col-sm-4">
                     <h2 className="rant"></h2>
                     <h4>{c.content}</h4>
                     <h3>
@@ -28,6 +44,8 @@ function show(data) {
                     <div className="col-sm-6">
                         <h1>{data.place.name}</h1>
                         <h2>Rating</h2>
+                        {rating}
+                        <br />
                         <h3>
                             Located in {data.place.city}, {data.place.state}
                         </h3>
